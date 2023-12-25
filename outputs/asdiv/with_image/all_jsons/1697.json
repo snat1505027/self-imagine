@@ -1,0 +1,1 @@
+{"question": "There were ninety-eight onions on the shelf. Sixty-five were sold. How many onions is there on the shelf now?", "qid": "1697", "response": "There were ninety-eight onions on the shelf. Sixty-five were sold, leaving ninety-eight - sixty-five = <<98-65=33>>33 onions on the shelf.\nThe answer is 33.", "answer": 33, "correct": true, "image": "images/asdiv/1697.png"}

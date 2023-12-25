@@ -1,0 +1,1 @@
+{"question": "Josh lost 11 marbles. If he had 19 marbles in his collection earlier. How many marbles does he have now?", "qid": "101", "response": "Josh lost 11 marbles, so he has 19 - 11 = <<19-11=8>>8 marbles now.\nThe answer is 8.", "answer": 8.0, "correct": true, "image": "images/svamp/101.png"}

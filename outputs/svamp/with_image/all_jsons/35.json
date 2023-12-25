@@ -1,0 +1,1 @@
+{"question": "Dan has $ 4. He bought a candy bar for $ 8. Then his friend have him $ 5. How much money is left?", "qid": "35", "response": "Dan has $4 initially. He spent $8 on a candy bar, so he has $4 - $8 = -$4.\nThen, his friend gave him $5, so he has $4 - $8 + $5 = $1.\nThe answer is $1.", "answer": 1.0, "correct": true, "image": "images/svamp/35.png"}

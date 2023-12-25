@@ -1,0 +1,1 @@
+{"question": "After paying 6 dollars for the pie, Sandy has 57 dollars left. How much money did she have before buying the pie ?", "qid": "1234", "response": "Before buying the pie, Sandy had $57 - $6 = $<<57-6=51>>51 dollars.\nThe answer is $51.", "answer": 63, "correct": false, "image": "images/asdiv/1234.png"}

@@ -1,0 +1,1 @@
+{"question": "Sam and Erica have $91 together. Sam has $38. How does Erica have?", "qid": "973", "response": "To find out how much Erica has, we need to subtract Sam's money from the total amount they have together.\n\n$91 - $38 = $<<91-38=53>>53\n\nThe answer is $53.", "answer": 53, "correct": true, "image": "images/asdiv/973.png"}

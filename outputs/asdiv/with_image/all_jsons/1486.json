@@ -1,0 +1,1 @@
+{"question": "There are 15 shapes. How many groups of 3 can you make with them?", "qid": "1486", "response": "To find the number of groups of 3, we need to divide the total number of shapes by 3.\n\n15 shapes \u00f7 3 groups = 5 groups of 3 shapes each.\n\nThe answer is 5.", "answer": 5, "correct": true, "image": "images/asdiv/1486.png"}

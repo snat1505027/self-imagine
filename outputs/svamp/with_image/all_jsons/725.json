@@ -1,0 +1,1 @@
+{"question": "Nell collects baseball cards. She had 242 cards. She gave 136 of her cards to Jeff. How many cards does Nell have left?", "qid": "725", "response": "Nell started with 242 cards. She gave 136 cards to Jeff, leaving her with 242 - 136 = <<242-136=106>>106 cards.\nThe answer is 106.", "answer": 106.0, "correct": true, "image": "images/svamp/725.png"}

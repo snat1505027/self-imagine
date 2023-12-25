@@ -1,0 +1,1 @@
+{"question": "6 packs of dvds can be bought with 120 dollars. How much does each pack cost?", "qid": "518", "response": "To find the cost of each pack of DVDs, we need to divide the total cost by the number of packs.\n\n120 / 6 = 20\n\nThe answer is $20.", "answer": 20.0, "correct": true, "image": "images/svamp/518.png"}

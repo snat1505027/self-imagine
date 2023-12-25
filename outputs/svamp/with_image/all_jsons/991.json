@@ -1,0 +1,1 @@
+{"question": "In a school there are 308 girls and 318 boys. There are also 36 teachers. How many pupils are there in that school?", "qid": "991", "response": "To find the total number of pupils in the school, we need to add the number of girls and boys.\n\n308 girls + 318 boys = 626 pupils\n\nThe answer is 626.", "answer": 626.0, "correct": true, "image": "images/svamp/991.png"}

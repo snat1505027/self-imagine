@@ -1,0 +1,1 @@
+{"question": "Mrs. Hilt measured her bookcase. It was 48 inches long. How many feet long was the bookcase?", "qid": "607", "response": "To convert the length of the bookcase from inches to feet, we need to divide the length by 12.\n\n48 inches \u00f7 12 = 4 feet\n\nThe answer is 4 feet.", "answer": 4, "correct": true, "image": "images/asdiv/607.png"}
