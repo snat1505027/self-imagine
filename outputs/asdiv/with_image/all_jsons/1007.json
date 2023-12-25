@@ -1,0 +1,1 @@
+{"question": "Ann has $777 and Bill has $1,111. How much does Bill need to give to Ann, so that they would have the same amount of money?", "qid": "1007", "response": "To find the amount Bill needs to give to Ann, we need to subtract Ann's money from Bill's money.\n\n$1,111 - $777 = $334\n\nThe answer is $334.", "answer": 167, "correct": false, "image": "images/asdiv/1007.png"}

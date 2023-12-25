@@ -1,0 +1,1 @@
+{"question": "A garden has 52 rows and 15 columns of bean plants. How many plants are there in all?", "qid": "523", "response": "To find the total number of bean plants, we need to multiply the number of rows by the number of columns.\n\n52 rows x 15 columns = 780 plants\n\nThe answer is 780.", "answer": 780, "correct": true, "image": "images/asdiv/523.png"}

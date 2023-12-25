@@ -1,0 +1,1 @@
+{"question": "Lucy has 212 fish. How many more fish does she need to buy to have 280 fish?", "qid": "613", "response": "To solve this problem, we need to find the difference between the number of fish Lucy already has and the number of fish she needs to reach 280.\n\n280 - 212 = 68\n\nThe answer is 68.", "answer": 68, "correct": true, "image": "images/asdiv/613.png"}

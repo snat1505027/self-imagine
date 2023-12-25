@@ -1,0 +1,1 @@
+{"question": "Frank had $16. After buying some new toys he had $8 left. How much did he spend on toys? ", "qid": "1646", "response": "To find out how much Frank spent on toys, we need to subtract the amount he had left from the amount he had initially.\n\n$16 - $8 = $<<16-8=8>>8\n\nThe answer is $8.", "answer": 8, "correct": false, "image": "images/asdiv/1646.png"}

@@ -1,0 +1,1 @@
+{"question": "Mrs. Griffin went to the grocery store with $70. She had $16 left after shopping. How much did Mrs. Griffin spend?", "qid": "965", "response": "Mrs. Griffin spent $70 - $16 = $<<70-16=54>>54.\nThe answer is $54.", "answer": 54, "correct": true, "image": "images/asdiv/965.png"}

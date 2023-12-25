@@ -1,0 +1,1 @@
+{"question": "Mrs. Sheridan has 11 cats. How many more cats does Mrs. Sheridan need to have 43 cats?", "qid": "96", "response": "To find the number of cats Mrs. Sheridan needs to have 43 cats, we need to subtract the number of cats she already has from 43.\n\n43 - 11 = 32\n\nThe answer is 32.", "answer": 32, "correct": true, "image": "images/asdiv/96.png"}

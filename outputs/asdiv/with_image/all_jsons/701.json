@@ -1,0 +1,1 @@
+{"question": "A chess club has 3 members. If 4 new members are enrolled, how many total members are there in the chess club?", "qid": "701", "response": "To solve this problem, we need to add the number of new members to the existing number of members.\n\n3 members + 4 new members = 7 members\n\nThe answer is 7.", "answer": 7, "correct": true, "image": "images/asdiv/701.png"}

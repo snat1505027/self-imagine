@@ -1,0 +1,1 @@
+{"question": "Baker made 173 cakes. He bought 103 new cakes and sold 86 cakes. How many cakes does baker still have?", "qid": "745", "response": "The baker made 173 cakes. He bought 103 new cakes, so he now has 173 + 103 = 276 cakes. He sold 86 cakes, so he now has 276 - 86 = 190 cakes. The answer is 190.", "answer": 190.0, "correct": true, "image": "images/svamp/745.png"}

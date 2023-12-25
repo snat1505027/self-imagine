@@ -1,0 +1,1 @@
+{"question": "Edward had $ 18. He spent $ 16. How much money does Edward have now?", "qid": "623", "response": "Edward had $18. He spent $16. Now, he has $18 - $16 = $<<18-16=2>>2. The answer is $2.", "answer": 2.0, "correct": true, "image": "images/svamp/623.png"}

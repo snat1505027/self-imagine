@@ -1,0 +1,1 @@
+{"question": "If they are already at 659 feet and the cave is 762 feet deep. How much farther until they reach the end of the cave?", "qid": "704", "response": "To find the total depth, we need to add the current depth and the depth of the cave.\n\n659 + 762 = 1421\n\nThe answer is 1421.", "answer": 103.0, "correct": false, "image": "images/svamp/704.png"}

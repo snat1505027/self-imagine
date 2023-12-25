@@ -1,0 +1,1 @@
+{"question": "There are 43 dogs, 72 fish, and 34 cats at my farm. How many pets do I have at my farm?", "qid": "172", "response": "To find the total number of pets at the farm, we need to add the number of dogs, fish, and cats.\n\n43 dogs + 72 fish + 34 cats = 149 pets\n\nThe answer is 149.", "answer": 149, "correct": true, "image": "images/asdiv/172.png"}

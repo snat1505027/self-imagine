@@ -1,0 +1,1 @@
+{"question": "I see 23 boys. How many eyes do I see?", "qid": "532", "response": "To solve this problem, we need to find the total number of eyes in the image. Since there are 23 boys, we can assume that each boy has two eyes, making a total of 23 x 2 = 46 eyes. The answer is 46.", "answer": 46, "correct": true, "image": "images/asdiv/532.png"}

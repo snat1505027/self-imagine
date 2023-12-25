@@ -1,0 +1,1 @@
+{"question": "If each pack costs 81 dollars. How much will it cost to buy 33 packs of dvds?", "qid": "604", "response": "To find the total cost of buying 33 packs of dvds, we need to multiply the number of packs by the cost of each pack.\n\n33 packs x $81/pack = $<<33*81=2663>>2663\n\nThe answer is $2663.", "answer": 2673.0, "correct": false, "image": "images/svamp/604.png"}
