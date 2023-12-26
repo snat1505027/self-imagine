@@ -113,6 +113,19 @@ TASK_PROMPT = {
 
                 Please think step-by-step, and finally answer by selecting an option using the format "The answer is <option>"
                 '''},
+'tracking_shuffled_objects_five_objects':
+                {'WITHOUT_IMAGE':'''A task requiring determining the final positions of a set of objects given their initial positions and a description of a sequence of swaps.
+            
+                Q: {question}
+
+                Please think step-by-step, and finally answer by selecting an option using the format "The answer is <option>"
+                ''',
+                'WITH_IMAGE':'''A task requiring determining the final positions of a set of objects given their initial positions and a description of a sequence of swaps using the image.
+            
+                Q: {question}
+
+                Please think step-by-step, and finally answer by selecting an option using the format "The answer is <option>"
+                '''},
 'tracking_shuffled_objects_seven_objects':
                 {'WITHOUT_IMAGE':'''A task requiring determining the final positions of a set of objects given their initial positions and a description of a sequence of swaps.
             
