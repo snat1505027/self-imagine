@@ -2,6 +2,8 @@ import os
 import shutil
 import re
 import json
+from typing import Any, Callable, Iterable, Match, Optional, Pattern, Protocol, Sequence, Union
+
 
 ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
 INVALID_ANS = "[invalid]"
@@ -67,40 +69,55 @@ def get_examples(split, lr=0, rr=-1):
     print(f"{len(examples)} {split} examples")
     return examples
     
+def find_numbers(x: str) -> list[str]:
+    numbers = re.compile(
+      r'-?[\d,]*\.?\d+',
+      re.MULTILINE | re.DOTALL | re.IGNORECASE,
+      ).findall(x)
+    return numbers
+
+
+def find_number(x: str, answer_delimiter: Optional[str] = 'Answer:') -> str:
+    if answer_delimiter in x:
+        answer = x.split(answer_delimiter)[-1]
+        numbers = find_numbers(answer)
+        if numbers:
+            return numbers[0]
+
+    numbers = find_numbers(x)
+    if numbers:
+        return numbers[-1]
+    return ''
+
+
+def is_float(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+
+def maybe_remove_comma(x: str) -> str:
+    if is_float(x):
+        return x
+    return x.replace(',', '')
+
 def return_predicted_answer(question_answer_list):
+    correct = 0
     for out in question_answer_list:
-        soln = out['response'].split('Q:')[0]
-        exact = float(out['answer'])
+        soln = out['response'].split('\nQ:')[0]
+        short_responses = maybe_remove_comma(find_number(soln))
         
-        if 'The answer is' in soln:
-            soln = soln.split('The answer is')[-1]
-            prob_ans = re.findall(r"[-+]?(?:[0-9,]*\.\d+)", soln)
-            prob_ans = [float(x.replace(',', '')) for x in prob_ans]
-            prob_ans = [float(x) for x in prob_ans]
-            if len(prob_ans) > 0 and exact == prob_ans[0]:
-                out['predict'] = out['answer']
-                out['is_correct'] = 1
-            else:
-                if len(prob_ans) > 0: out['predict'] = str(prob_ans[0])
-                else: out['predict'] = "-10000000000"
-                out['is_correct'] = 0
+        if short_responses != '':
+            correct += float(maybe_remove_comma(find_number(out['answer']))) == float(short_responses)
+            out['is_correct'] = int(float(maybe_remove_comma(find_number(out['answer']))) == float(short_responses))
+            out['predict'] = short_responses
         else:
-            out['predict'] = "-10000000000"
             out['is_correct'] = 0
-
-
-        soln = out['response'].split('Q:')[0]
-        exact = float(out['answer'])
-        prob_ans = re.findall(r"[-+]?(?:[0-9,]*\.\d+)", soln)
-        prob_ans = [float(x.replace(',', '')) for x in prob_ans]
-        if len(prob_ans) > 0 and exact == prob_ans[-1]:
-            out['predict_last'] = out['answer']
-            out['is_correct_last'] = 1
-        else:
-            if len(prob_ans) > 0: out['predict_last'] = str(prob_ans[-1])
-            else: out['predict_last'] = "-10000000000"
-            out['is_correct_last'] = 0
+            out['predict'] = "-10000000000"
             
+    print('Accuracy: ', correct/(1.0*len(question_answer_list)))
     return question_answer_list
 
 
@@ -145,3 +162,18 @@ def extract_answer(completion):
         return match_str
     else:
         return INVALID_ANS
+    
+    
+def is_correct(model_completion, gt_example):
+    gt_answer = extract_answer(gt_example["answer"])
+    assert gt_answer != INVALID_ANS
+    return extract_answer(model_completion) == gt_answer
+
+def gather_html(qid):
+    with open(f'htmls/GSM8K_html/math_{qid}.json') as f:
+        d = json.load(f)
+        qid = d['qid']
+        soln = d["predict"]
+        soln = soln.split('Q:')[0].strip()
+        
+    return soln
