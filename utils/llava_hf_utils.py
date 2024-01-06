@@ -89,9 +89,9 @@ def get_attention_over_text_and_images(prompt: str,
   """Generates outputs for given text prompts and images, and calculates attention scores
     to text and images in the output.
 
-    This function addresses the limitation of Hugging Face's default behavior which doesn't return 
+    This function addresses the limitation of HuggingFace's default behavior which doesn't return 
     the output attentions for generated tokens. It does so by:
-    1. Generating output tokens.
+    1. Generating output tokens (generated_ids).
     2. Performing a forward pass on the combined input_ids and generated_ids to obtain attention scores.
     
     
@@ -103,7 +103,9 @@ def get_attention_over_text_and_images(prompt: str,
 
   # Step 1: Generate output tokens (generated_ids)
   inputs = processor(text=prompt, images=image, return_tensors="pt").to(model.device)
-  generate_ids = model.generate(**inputs, max_length=max_length)  # generate_ids this already includes the input tokens
+  generate_ids = model.generate(**inputs, max_length=max_length)  
+  
+  # NOTE: generate_ids already includes the input tokens
 
   # Step 2: Do a forward pass on input_ids + generated_ids, get the attention tokens.
   outs = model(input_ids=generate_ids,
