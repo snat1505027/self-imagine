@@ -8,8 +8,7 @@ Tested on transformers 4.36.2
 from transformers import AutoProcessor, LlavaForConditionalGeneration
 
 import torch
-
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+from typing import Dict
 
 
 def get_model_and_processor(model_name: str = "llava-hf/llava-1.5-7b-hf"):
@@ -43,7 +42,7 @@ def get_image_features(model: LlavaForConditionalGeneration, inputs: dict) -> to
     return image_features
 
 
-def get_input_image_attention_scores(attentions: torch.Tensor, 
+def get_input_text_ids_locations(attentions: torch.Tensor, 
                                      input_ids:  torch.Tensor, 
                                      image_features:  torch.Tensor, 
                                      model: LlavaForConditionalGeneration) -> tuple:
@@ -116,9 +115,9 @@ def get_attention_over_text_and_images(prompt: str,
   # Step 3: Extract the location of text_ids in the concatenated 
   # representation (input_embeds + image_embeds) that would be have been to the language model
 
-  image_features = get_image_features(inputs)
+  image_features = get_image_features(model, inputs)
 
-  batch_indices, text_ids = get_input_image_attention_scores(outs.attentions, generate_ids, image_features, model)
+  batch_indices, text_ids = get_input_text_ids_locations(outs.attentions, generate_ids, image_features, model)
 
 
   
@@ -181,3 +180,4 @@ def test_get_attention_over_text_and_images():
     'attentions_to_text': tensor([0.8139, 0.7184, 0.7009, 0.7216, 0.7201, 0.7093, 0.6814, 0.6757, 0.6996,
          0.6587], device='cuda:0')}
     """
+    return res
