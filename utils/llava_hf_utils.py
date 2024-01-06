@@ -179,5 +179,8 @@ def test_get_attention_over_text_and_images():
          0.1655], device='cuda:0'),
     'attentions_to_text': tensor([0.8139, 0.7184, 0.7009, 0.7216, 0.7201, 0.7093, 0.6814, 0.6757, 0.6996,
          0.6587], device='cuda:0')}
+
+    Interpretation: for generating the first output token, ~81% (0.8139) of the attention went to the input text tokens, 
+    and ~10% (0.1066) of the attention went to the image tokens.
     """
     return res
