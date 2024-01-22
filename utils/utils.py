@@ -3,7 +3,7 @@ import shutil
 import re
 import json
 from typing import Any, Callable, Iterable, Match, Optional, Pattern, Protocol, Sequence, Union
-
+from collections import Counter
 
 ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
 INVALID_ANS = "[invalid]"
@@ -102,6 +102,25 @@ def maybe_remove_comma(x: str) -> str:
     if is_float(x):
         return x
     return x.replace(',', '')
+
+def get_one_answer(out):
+    soln = out.split('\nQ:')[0]
+    short_responses = maybe_remove_comma(find_number(soln))
+    return short_responses
+
+
+def select_majority(outputs):
+    if len(outputs) == 1:
+        return outputs[0]
+    
+    all_results = []
+    all_dict = {}
+    for out in outputs:
+        all_results.append(get_one_answer(out))
+        all_dict[all_results[-1]] = out
+    counter = Counter(all_results)
+    most_common = counter.most_common(1)[0]
+    return all_dict[most_common[0]], outputs
 
 def return_predicted_answer(question_answer_list):
     correct = 0

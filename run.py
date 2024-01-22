@@ -60,7 +60,10 @@ class GSMDataset(th.utils.data.Dataset):
 @click.option("--rr", default=500, type=int)
 @click.option("--task", default='gsm8k', type=str)
 @click.option("--method", default='with_image', type=str)
-def main(lr, rr, task, method):
+@click.option("--sc", is_flag=True)
+@click.option("--temp", default=0.0, type=float)
+@click.option("--max_gen", default=1, type=int)
+def main(lr, rr, task, method, temp, max_gen, sc):
     
     question_image_dict = {}
     
@@ -74,19 +77,29 @@ def main(lr, rr, task, method):
         
     test_dset = GSMDataset(test_examples)
     test_loader = DataLoader(test_dset, batch_size=1, shuffle=False)
-    vqa_model = LLAVA(temperature=0.0, conv_mode='llava_v0')
+    vqa_model = LLAVA(temperature=temp, conv_mode='llava_v0')
     
     all_responses = []
     
-    if not os.path.exists(f'/home/sakter/courses/Fall_2023/outputs/{task}'):
-        os.makedirs(f'/home/sakter/courses/Fall_2023/outputs/{task}')
-    if not os.path.exists(f'/home/sakter/courses/Fall_2023/outputs/{task}/{method}'):
-        os.makedirs(f'/home/sakter/courses/Fall_2023/outputs/{task}/{method}')
-    if not os.path.exists(f'/home/sakter/courses/Fall_2023/outputs/{task}/{method}/all_jsons'):
-        os.makedirs(f'/home/sakter/courses/Fall_2023/outputs/{task}/{method}/all_jsons')
-    
+    if sc:
+        if not os.path.exists(f'/home/sakter/courses/Fall_2023/outputs/self_consistency/{task}'):
+            os.makedirs(f'/home/sakter/courses/Fall_2023/outputs/self_consistency/{task}')
+        if not os.path.exists(f'/home/sakter/courses/Fall_2023/outputs/self_consistency/{task}/{method}'):
+            os.makedirs(f'/home/sakter/courses/Fall_2023/outputs/self_consistency/{task}/{method}')
+        if not os.path.exists(f'/home/sakter/courses/Fall_2023/outputs/self_consistency/{task}/{method}/all_jsons'):
+            os.makedirs(f'/home/sakter/courses/Fall_2023/outputs/self_consistency/{task}/{method}/all_jsons')
+    else:
+        if not os.path.exists(f'/home/sakter/courses/Fall_2023/outputs/{task}'):
+            os.makedirs(f'/home/sakter/courses/Fall_2023/outputs/{task}')
+        if not os.path.exists(f'/home/sakter/courses/Fall_2023/outputs/{task}/{method}'):
+            os.makedirs(f'/home/sakter/courses/Fall_2023/outputs/{task}/{method}')
+        if not os.path.exists(f'/home/sakter/courses/Fall_2023/outputs/{task}/{method}/all_jsons'):
+            os.makedirs(f'/home/sakter/courses/Fall_2023/outputs/{task}/{method}/all_jsons')
+
     
     path = f'/home/sakter/courses/Fall_2023/outputs/{task}/{method}'
+    if sc:
+        path = f'outputs/self_consistency/{task}/{method}'
     
     for idx, (qid, qn, ans) in tqdm(enumerate(test_loader), total=len(test_loader)):
         
@@ -107,7 +120,7 @@ def main(lr, rr, task, method):
             else: q_prompt = basic.TASK_PROMPT[task][method.upper()].format(question=q)
 
             
-            response = vqa_model.ask(img_path, q_prompt)
+            response = vqa_model.ask(img_path, q_prompt, max_gen=max_gen)
             al = {'qid': qi.item(), 
                   'prompt': q_prompt, 
                   'question': q,
