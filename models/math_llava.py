@@ -40,7 +40,7 @@ def disable_torch_init():
     import torch
     setattr(torch.nn.Linear, "reset_parameters", lambda self: None)
     setattr(torch.nn.LayerNorm, "reset_parameters", lambda self: None)
-    
+
 def load_image(image_file):
     if image_file.startswith('http') or image_file.startswith('https'):
         response = requests.get(image_file)
@@ -62,10 +62,10 @@ def image_parser(image_file):
 
 
 class LLAVA():
-    def __init__(self, model_path="liuhaotian/llava-v1.5-13b", mm_projector_setting=None, 
+    def __init__(self, model_path="liuhaotian/llava-v1.5-13b", mm_projector_setting=None,
                      vision_tower_setting=None, conv_mode='vicuna_v1', temperature=0.0, CACHE="/data/tir/projects/tir6/general/sakter/cache"):
         disable_torch_init()
-        
+
         model_name = get_model_name_from_path(model_path)
         tokenizer, model, image_processor, context_len = load_pretrained_model(
             model_path, None, model_name
@@ -118,14 +118,14 @@ class LLAVA():
 
         if self.conv_mode == 'simple_legacy':
             qs += '\n\n### Response:'
-        
+
         conv = conv_templates[self.conv_mode].copy()
         if system_prompt:
             conv.system = system_prompt
         conv.append_message(conv.roles[0], qs)
         conv.append_message(conv.roles[1], None)
         prompt = conv.get_prompt()
-        
+
         if img_path is None:
             images_tensor = None
         else:
@@ -147,7 +147,7 @@ class LLAVA():
         keywords = [stop_str]
         stopping_criteria = KeywordsStoppingCriteria(keywords, self.tokenizer, input_ids)
 
-        
+
         with torch.inference_mode():
             output_ids = self.model.generate(
                 input_ids,
@@ -159,17 +159,17 @@ class LLAVA():
                 max_new_tokens=1024,
                 use_cache=True,
                 stopping_criteria=[stopping_criteria],
-                num_return_sequences= max_gen,
+                num_return_sequences=max_gen,
             )
 
         outputs = self.decode_output_text(output_ids, input_ids, conv=conv, stop_str=stop_str)
-        
+
         return outputs
 
     def caption(self, img_path):
         return self.ask(img_path=img_path, text='Give a clear and concise summary of the image below in one paragraph.')
-         
-    
+
+
 if __name__ == "__main__":
     llava_model = LLAVA()
     print('successfully initialized llava model')

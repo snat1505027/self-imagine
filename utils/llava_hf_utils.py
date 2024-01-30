@@ -6,7 +6,6 @@ Tested on transformers 4.36.2
 """
 
 from transformers import AutoProcessor, LlavaForConditionalGeneration
-
 import torch
 from typing import Dict
 
@@ -25,11 +24,11 @@ def get_image_features(model: LlavaForConditionalGeneration, inputs: dict) -> to
     Extracts image features using a specified vision model.
 
     This function processes input images through a vision model (like a tower of CLIP),
-    extracts the hidden states from a specified layer, and then projects these features 
+    extracts the hidden states from a specified layer, and then projects these features
     using the model's multi-modal projector.
 
     Args:
-    inputs (dict): A dictionary containing input data for the model. 
+    inputs (dict): A dictionary containing input data for the model.
                    Expected to have a key "pixel_values" with tensor values representing the image.
 
     Returns:
@@ -42,11 +41,11 @@ def get_image_features(model: LlavaForConditionalGeneration, inputs: dict) -> to
     return image_features
 
 
-def get_input_text_ids_locations(attentions: torch.Tensor, 
-                                     input_ids:  torch.Tensor, 
-                                     image_features:  torch.Tensor, 
+def get_input_text_ids_locations(attentions: torch.Tensor,
+                                     input_ids:  torch.Tensor,
+                                     image_features:  torch.Tensor,
                                      model: LlavaForConditionalGeneration) -> tuple:
-    
+
     """
     Computes the positions where text tokens should be in the merged image-text sequence, considering special image tokens
     and the number of image patches.
@@ -76,35 +75,35 @@ def get_input_text_ids_locations(attentions: torch.Tensor,
     if left_padding:
         new_token_positions += nb_image_pad[:, None]  # offset for left padding
     text_ids = new_token_positions[batch_indices, non_image_indices]
-    
+
     return batch_indices, text_ids
 
 @torch.no_grad()
-def get_attention_over_text_and_images(prompt: str, 
-        image: torch.Tensor, 
+def get_attention_over_text_and_images(prompt: str,
+        image: torch.Tensor,
         model: LlavaForConditionalGeneration,
         processor: AutoProcessor,
-        max_length: int = 30, 
+        max_length: int = 30,
         return_average: bool = False) -> Dict[str, torch.Tensor]:
   """Generates outputs for given text prompts and images, and calculates attention scores
     to text and images in the output.
 
-    This function addresses the limitation of HuggingFace's default behavior which doesn't return 
+    This function addresses the limitation of HuggingFace's default behavior which doesn't return
     the output attentions for generated tokens. It does so by:
     1. Generating output tokens (generated_ids).
     2. Performing a forward pass on the combined input_ids and generated_ids to obtain attention scores.
-    
-    
+
+
     Returns:
     Dict[str, Tensor]: A dictionary containing attention scores to image tokens ('attentions_to_image')
                         and text ('attentions_to_text')."""
-  
+
   assert not isinstance(prompt, list), "This version only works for a batch size of 1"
 
   # Step 1: Generate output tokens (generated_ids)
   inputs = processor(text=prompt, images=image, return_tensors="pt").to(model.device)
-  generate_ids = model.generate(**inputs, max_length=max_length)  
-  
+  generate_ids = model.generate(**inputs, max_length=max_length)
+
   # NOTE: generate_ids already includes the input tokens
 
   # Step 2: Do a forward pass on input_ids + generated_ids, get the attention tokens.
@@ -114,7 +113,7 @@ def get_attention_over_text_and_images(prompt: str,
                return_dict=True,
                output_attentions=True)
 
-  # Step 3: Extract the location of text_ids in the concatenated 
+  # Step 3: Extract the location of text_ids in the concatenated
   # representation (input_embeds + image_embeds) that would be have been to the language model
 
   image_features = get_image_features(model, inputs)
@@ -122,14 +121,14 @@ def get_attention_over_text_and_images(prompt: str,
   batch_indices, text_ids = get_input_text_ids_locations(outs.attentions, generate_ids, image_features, model)
 
 
-  
+
   # outs.logits.shape = (bsz, seq_len, vocab)
   all_possible_indices = torch.arange(outs.logits.shape[-2]).to(model.device)
   # image ids are all the locations that are not text_ids
   image_ids = all_possible_indices[~torch.isin(all_possible_indices, text_ids)]
 
 
-    
+
   # split the input and output ids
   generated_text_ids = text_ids[inputs["input_ids"].shape[1]:]
   generated_batch_indices = batch_indices[inputs["input_ids"].shape[1]:]
@@ -141,10 +140,10 @@ def get_attention_over_text_and_images(prompt: str,
   # Step 4: get attentions
   # print(len(outs.attentions)) # 32 layers
   # print(outs.attentions[-1].shape) # 32 heads for the 7b model
-  
+
   last_layer_attn_avg_heads = outs.attentions[-1].mean(dim=1)
 
-  
+
   # (num_generated_tokens, total_seq_len)
   attention_for_generated_tokens = last_layer_attn_avg_heads[generated_batch_indices, generated_text_ids]
 
@@ -158,7 +157,7 @@ def get_attention_over_text_and_images(prompt: str,
   if return_average:
     attentions_to_text = attentions_to_text.mean()
     attentions_to_image = attentions_to_image.mean()
-  
+
   return {
       "attentions_to_image": attentions_to_image,
       "attentions_to_text": attentions_to_text
@@ -182,7 +181,7 @@ def test_get_attention_over_text_and_images():
     'attentions_to_text': tensor([0.8139, 0.7184, 0.7009, 0.7216, 0.7201, 0.7093, 0.6814, 0.6757, 0.6996,
          0.6587], device='cuda:0')}
 
-    Interpretation: for generating the first output token, ~81% (0.8139) of the attention went to the input text tokens, 
+    Interpretation: for generating the first output token, ~81% (0.8139) of the attention went to the input text tokens,
     and ~10% (0.1066) of the attention went to the image tokens.
     """
     return res
